@@ -55,6 +55,8 @@
     <Compile Include="SmsLabel.cs" />
     <Compile Include="Tokenizers\WordsTokenizer.cs" />
     <Compile Include="Tokenizers\ToLowerWordsTokenizer.cs" />
+    <Compile Include="VocabularyGenerators\AllWordsVocabulary.cs" />
+    <Compile Include="VocabularyGenerators\IVocabularyGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

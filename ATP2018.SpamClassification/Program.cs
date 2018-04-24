@@ -15,7 +15,7 @@
             var tokenizer = new ToLowerWordsTokenizer();
             var classicitor = new NaiveBayes(tokenizer);
 
-            classicitor.Train(trainingData.ToArray(), new string[] { "free", "txt", "car", "call", "i", "mobile", "you", "me" });
+            classicitor.Train(trainingData.ToArray(), new VocabularyGenerators.AllWordsVocabulary().GetVocabulary(tokenizer, trainingData.Select(x => x.Text)));
             Evaluate(tokenizer, classicitor, verificationData);
 
             Console.WriteLine("___________________________________");
