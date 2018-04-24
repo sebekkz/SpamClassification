@@ -5,10 +5,10 @@
 
     public class AllWordsVocabulary : IVocabularyGenerator
     {
-        public string[] GetVocabulary(ITokenizer tokenizer, IEnumerable<string> texts)
+        public string[] GetVocabulary(ITokenizer tokenizer, IEnumerable<Sms> smses)
         {
-            return texts
-                .SelectMany(x => tokenizer.Tokenize(x))
+            return smses
+                .SelectMany(x => tokenizer.Tokenize(x.Text))
                 .Distinct()
                 .ToArray();
         }

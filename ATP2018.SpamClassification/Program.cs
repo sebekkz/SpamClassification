@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using ATP2018.SpamClassification.Classifiers;
+    using ATP2018.SpamClassification.VocabularyGenerators;
 
     public class Program
     {
@@ -12,10 +13,11 @@
             var smsCollection = new DataReader($@"{Environment.CurrentDirectory}\Data\SMSSpamCollection").Read();
             var trainingData = smsCollection.Skip(1000);
             var verificationData = smsCollection.Take(1000);
-            var tokenizer = new ToLowerWordsTokenizer();
+            ITokenizer tokenizer = new ToLowerWordsTokenizer();
             var classicitor = new NaiveBayes(tokenizer);
+            IVocabularyGenerator vacabulary = new TopWordsVocabulary();
 
-            classicitor.Train(trainingData.ToArray(), new VocabularyGenerators.AllWordsVocabulary().GetVocabulary(tokenizer, trainingData.Select(x => x.Text)));
+            classicitor.Train(trainingData.ToArray(), vacabulary.GetVocabulary(tokenizer, trainingData));
             Evaluate(tokenizer, classicitor, verificationData);
 
             Console.WriteLine("___________________________________");
@@ -23,7 +25,8 @@
             trainingData = smsCollection.Take(4800);
             verificationData = smsCollection.Skip(4800);
 
-            classicitor.Train(trainingData.ToArray(), new string[] { "free", "txt", "car", "call", "i", "mobile", "you", "me" });
+            tokenizer = new WordsTokenizer();
+            classicitor.Train(trainingData.ToArray(), new string[] { "FREE", "txt", "car", "call", "i", "mobile", "you", "me" });
             Evaluate(tokenizer, classicitor, verificationData);
 
             Console.ReadKey();

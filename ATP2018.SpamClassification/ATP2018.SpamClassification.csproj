@@ -57,6 +57,7 @@
     <Compile Include="Tokenizers\ToLowerWordsTokenizer.cs" />
     <Compile Include="VocabularyGenerators\AllWordsVocabulary.cs" />
     <Compile Include="VocabularyGenerators\IVocabularyGenerator.cs" />
+    <Compile Include="VocabularyGenerators\TopWordsVocabulary.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
