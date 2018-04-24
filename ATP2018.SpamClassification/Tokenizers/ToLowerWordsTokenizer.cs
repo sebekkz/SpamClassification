@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace ATP2018.SpamClassification
 {
-    public class InvariantWordsTokenizer : ITokenizer
+    public class ToLowerWordsTokenizer : ITokenizer
     {
         private Regex regex = new Regex(@"\w+");
 
