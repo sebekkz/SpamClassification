@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
-namespace ATP2018.SpamClassification
+﻿namespace ATP2018.SpamClassification
 {
-    public class DataReader {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
 
+    public class DataReader
+    {
         private readonly string path;
 
         public DataReader(string path)
@@ -16,7 +16,7 @@ namespace ATP2018.SpamClassification
 
         public IEnumerable<Sms> Read()
         {
-            return Read(path);
+            return this.Read(this.path);
         }
 
         private IEnumerable<Sms> Read(string path)
@@ -36,9 +36,15 @@ namespace ATP2018.SpamClassification
         private SmsLabel ParseLabel(string label)
         {
             if (label.Equals("ham", StringComparison.InvariantCultureIgnoreCase))
+            {
                 return SmsLabel.Ham;
+            }
+
             if (label.Equals("spam", StringComparison.InvariantCultureIgnoreCase))
+            {
                 return SmsLabel.Spam;
+            }
+
             return SmsLabel.Incorrect;
         }
     }

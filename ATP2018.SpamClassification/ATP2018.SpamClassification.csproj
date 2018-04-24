@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="Classifiers\HamClassifier.cs" />
     <Compile Include="Classifiers\IClassifier.cs" />
-    <Compile Include="Classifiers\PrimitiveClassifier.cs" />
+    <Compile Include="Classifiers\PrimitiveSpamClassifier.cs" />
     <Compile Include="DataReader.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="Classifiers\NaiveBayes.cs" />
@@ -68,6 +68,5 @@
   <ItemGroup>
     <Content Include="Interactive.txt" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

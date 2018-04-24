@@ -11,8 +11,11 @@
 
         public SmsLabel Classify(string text)
         {
-            if (text.Contains(spamWord))
+            if (text.Contains(this.spamWord))
+            {
                 return SmsLabel.Spam;
+            }
+
             return SmsLabel.Ham;
         }
     }

@@ -7,8 +7,8 @@
 
         public Sms(SmsLabel label, string text)
         {
-            Label = label;
-            Text = text;
+            this.Label = label;
+            this.Text = text;
         }
     }
 }
