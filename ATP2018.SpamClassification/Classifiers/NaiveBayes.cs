@@ -11,7 +11,8 @@
 
         public NaiveBayes(ITokenizer tokenizer)
         {
-            this.tokenizer = tokenizer ?? throw new ArgumentNullException(nameof(tokenizer));
+            if (tokenizer == null) throw new ArgumentNullException(nameof(tokenizer));
+            this.tokenizer = tokenizer;
         }
 
         public void Train(Sms[] smses, string[] classificationTokens)
@@ -22,12 +23,7 @@
                 .Select(x => new Tuple<SmsLabel, IEnumerable<HashSet<string>>>(x.Key, x.Select(y => y.Item2)))
                 .Select(x => new Tuple<SmsLabel, Group>(x.Item1, this.Analyze(x.Item2, smses.Length, classificationTokens)));
 
-            this.groups = new Dictionary<SmsLabel, Group>();
-
-            foreach (var group in selectedGroups)
-            {
-                this.groups.Add(group.Item1, group.Item2);
-            }
+            this.groups = selectedGroups.ToDictionary(x => x.Item1, x => x.Item2);
         }
 
         public SmsLabel Classify(string text)
@@ -46,11 +42,7 @@
             var propotion = (double)t.Length / total;
             var scoredTokens = classificationTokens.Select(x => new Tuple<string, double>(x, this.TokenFrequency(x, tokens)));
 
-            var frequencies = new Dictionary<string, double>();
-            foreach (var scoredToken in scoredTokens)
-            {
-                frequencies.Add(scoredToken.Item1, scoredToken.Item2);
-            }
+            var frequencies = scoredTokens.ToDictionary(x => x.Item1, x => x.Item2);
 
             return new Group(propotion, frequencies);
         }
@@ -68,11 +60,13 @@
 
         private double TokenScore(Group group, string token)
         {
+            double frequency;
             group
                 .TokenFrequencies
-                .TryGetValue(token, out double frequency);
+                .TryGetValue(token, out frequency);
 
-            return frequency == 0 ? 0 : Math.Log(frequency);
+            double tolerance = 0.0001;
+            return Math.Abs(frequency) < tolerance ? 0 : Math.Log(frequency);
         }
 
         private double Score(HashSet<string> tokenizedSms, Group group)

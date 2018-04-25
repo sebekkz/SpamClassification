@@ -7,8 +7,10 @@
     {
         public Group(double proportion, Dictionary<string, double> tokenFrequencies)
         {
+            if (tokenFrequencies == null) throw new ArgumentNullException(nameof(tokenFrequencies));
+
             this.Proportion = proportion;
-            this.TokenFrequencies = tokenFrequencies ?? throw new ArgumentNullException(nameof(tokenFrequencies));
+            this.TokenFrequencies = tokenFrequencies;
         }
 
         public double Proportion { get; }
