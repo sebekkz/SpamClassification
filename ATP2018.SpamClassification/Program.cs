@@ -14,11 +14,11 @@
             var trainingData = smsCollection.Skip(1000);
             var verificationData = smsCollection.Take(1000);
             ITokenizer tokenizer = new ToLowerWordsTokenizer();
-            var classicitor = new NaiveBayes(tokenizer);
+            var classifier = new NaiveBayes(tokenizer);
             IVocabularyGenerator vacabulary = new TopWordsVocabulary();
 
-            classicitor.Train(trainingData.ToArray(), vacabulary.GetVocabulary(tokenizer, trainingData));
-            Evaluate(tokenizer, classicitor, verificationData);
+            classifier.Train(trainingData.ToArray(), vacabulary.GetVocabulary(tokenizer, trainingData));
+            Evaluate(tokenizer, classifier, verificationData);
 
             Console.WriteLine("___________________________________");
 
@@ -26,8 +26,8 @@
             verificationData = smsCollection.Skip(4800);
 
             tokenizer = new WordsTokenizer();
-            classicitor.Train(trainingData.ToArray(), new string[] { "FREE", "txt", "car", "call", "i", "mobile", "you", "me" });
-            Evaluate(tokenizer, classicitor, verificationData);
+            classifier.Train(trainingData.ToArray(), new string[] { "FREE", "txt", "car", "call", "i", "mobile", "you", "me" });
+            Evaluate(tokenizer, classifier, verificationData);
 
             Console.ReadKey();
         }
