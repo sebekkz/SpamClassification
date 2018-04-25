@@ -13,6 +13,11 @@
             var smsCollection = new DataReader($@"{Environment.CurrentDirectory}\Data\SMSSpamCollection").Read();
             var trainingData = smsCollection.Skip(1000);
             var verificationData = smsCollection.Take(1000);
+            var tokenizer = new WordsTokenizer();
+
+            // TODO: Here you can update classifier (HamClassifier, PrimitiveSpamClassifier, NaiveBayes)
+            var classifier = new HamClassifier();
+            Evaluate(tokenizer, classifier, verificationData);
 
             Console.ReadKey();
         }
