@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using ATP2018.SpamClassification.Classifiers;
-    using ATP2018.SpamClassification.VocabularyGenerators;
+    using Classifiers;
+    using VocabularyGenerators;
 
     public class Program
     {
@@ -18,7 +18,7 @@
             IVocabularyGenerator vacabulary = new TopWordsVocabulary();
 
             classifier.Train(trainingData.ToArray(), vacabulary.GetVocabulary(tokenizer, trainingData));
-            Evaluate(tokenizer, classifier, verificationData);
+            Evaluate(classifier, verificationData);
 
             Console.WriteLine("___________________________________");
 
@@ -27,12 +27,12 @@
 
             tokenizer = new WordsTokenizer();
             classifier.Train(trainingData.ToArray(), new string[] { "FREE", "txt", "car", "call", "i", "mobile", "you", "me" });
-            Evaluate(tokenizer, classifier, verificationData);
+            Evaluate(classifier, verificationData);
 
             Console.ReadKey();
         }
 
-        private static void Evaluate(ITokenizer tokenizer, IClassifier classifier, IEnumerable<Sms> verificationData)
+        private static void Evaluate(IClassifier classifier, IEnumerable<Sms> verificationData)
         {
             var valid = verificationData.Average(x => Validate(x.Label, classifier.Classify(x.Text)));
             var validHam = verificationData.Where(x => x.Label == SmsLabel.Ham).Average(x => Validate(x.Label, classifier.Classify(x.Text)));
