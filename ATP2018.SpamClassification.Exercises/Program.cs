@@ -3,8 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using ATP2018.SpamClassification.Classifiers;
-    using ATP2018.SpamClassification.VocabularyGenerators;
+    using Classifiers;
 
     public class Program
     {
