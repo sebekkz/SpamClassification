@@ -22,19 +22,25 @@ namespace ATP2018.SpamClassification
                 Evaluate(hamClassifier, verificationData);
             });
 
-            Run("Using Primitive classifier classifier ... ", () =>
+            Run("Using Primitive classifier ... ", () =>
             {
                 var primitiveSpamClassifier = new PrimitiveSpamClassifier();
                 Evaluate(primitiveSpamClassifier, verificationData);
             });
 
-            Run("Using Primitive Naive Bayer classifier ... ", () =>
+            Run("Using Primitive Naive Bayer classifier #1 (automatic token selection - 30 most popular tokens) ... ", () =>
             {
                 var naiveBayesClassifier = new NaiveBayes(tokenizer);
-                IVocabularyGenerator vacabulary = new TopWordsVocabulary();
-                naiveBayesClassifier.Train(trainingData.ToArray(), vacabulary.GetVocabulary(tokenizer, trainingData));
+                naiveBayesClassifier.Train(trainingData.ToArray(), new TopWordsVocabulary().GetVocabulary(tokenizer, trainingData));
                 Evaluate(naiveBayesClassifier, verificationData);
-            });        
+            });
+
+            Run("Using Primitive Naive Bayer classifier #2 (manually selected tokens) ... ", () =>
+            {
+                var naiveBayesClassifier = new NaiveBayes(tokenizer);
+                naiveBayesClassifier.Train(trainingData.ToArray(), new [] { "FREE", "txt", "car", "call", "i", "mobile", "you", "me" });
+                Evaluate(naiveBayesClassifier, verificationData);
+            });
 
             Console.WriteLine("Press any key to terminate.");
             Console.ReadKey();
