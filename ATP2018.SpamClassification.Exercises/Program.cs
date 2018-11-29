@@ -17,12 +17,12 @@
 
             // TODO: Here you can update classifier (HamClassifier, PrimitiveSpamClassifier, NaiveBayes)
             var classifier = new HamClassifier();
-            Evaluate(tokenizer, classifier, verificationData);
+            Evaluate(classifier, verificationData);
 
             Console.ReadKey();
         }
 
-        private static void Evaluate(ITokenizer tokenizer, IClassifier classifier, IEnumerable<Sms> verificationData)
+        private static void Evaluate(IClassifier classifier, IEnumerable<Sms> verificationData)
         {
             var valid = verificationData.Average(x => Validate(x.Label, classifier.Classify(x.Text)));
             var validHam = verificationData.Where(x => x.Label == SmsLabel.Ham).Average(x => Validate(x.Label, classifier.Classify(x.Text)));
