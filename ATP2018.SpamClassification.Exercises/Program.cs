@@ -1,4 +1,6 @@
-﻿namespace ATP2018.SpamClassification
+﻿using ATP2018.SpamClassification.VocabularyGenerators;
+
+namespace ATP2018.SpamClassification
 {
     using System;
     using System.Collections.Generic;
@@ -14,11 +16,43 @@
             var verificationData = smsCollection.Take(1000);
             var tokenizer = new WordsTokenizer();
 
-            // TODO: Here you can update classifier (HamClassifier, PrimitiveSpamClassifier, NaiveBayes)
-            var classifier = new HamClassifier();
-            Evaluate(classifier, verificationData);
+            Run("Using HAM classifier ... ", () =>
+            {
+                var hamClassifier = new HamClassifier();
+                Evaluate(hamClassifier, verificationData);
+            });
 
+            Run("Using Primitive classifier classifier ... ", () =>
+            {
+                var primitiveSpamClassifier = new PrimitiveSpamClassifier();
+                Evaluate(primitiveSpamClassifier, verificationData);
+            });
+
+            Run("Using Primitive Naive Bayer classifier ... ", () =>
+            {
+                var naiveBayesClassifier = new NaiveBayes(tokenizer);
+                IVocabularyGenerator vacabulary = new TopWordsVocabulary();
+                naiveBayesClassifier.Train(trainingData.ToArray(), vacabulary.GetVocabulary(tokenizer, trainingData));
+                Evaluate(naiveBayesClassifier, verificationData);
+            });        
+
+            Console.WriteLine("Press any key to terminate.");
             Console.ReadKey();
+        }
+
+        private static void Run(string header, Action action)
+        {
+            try
+            {
+                Console.WriteLine(header);
+                Console.WriteLine("------------------------");
+                action();                
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            Console.WriteLine();
         }
 
         private static void Evaluate(IClassifier classifier, IEnumerable<Sms> verificationData)
